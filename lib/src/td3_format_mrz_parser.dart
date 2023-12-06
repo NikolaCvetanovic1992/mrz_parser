@@ -19,7 +19,7 @@ class _TD3MRZFormatParser {
     final secondLine = input[1];
 
     final isVisaDocument = firstLine[0] == 'V';
-    final documentTypeRaw = firstLine.substring(0, 2);
+    final documentTypeRaw = firstLine.substring(0, 1);
     final countryCodeRaw = firstLine.substring(2, 5);
     final namesRaw = firstLine.substring(5);
     final documentNumberRaw = secondLine.substring(0, 9);
