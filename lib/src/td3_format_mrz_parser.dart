@@ -22,7 +22,7 @@ class _TD3MRZFormatParser {
     final documentTypeRaw = firstLine.substring(0, 1);
     final countryCodeRaw = firstLine.substring(2, 5);
     final namesRaw = firstLine.substring(5);
-    final documentNumberRaw = secondLine.substring(0, 9);
+    final documentNumberRaw = secondLine.substring(0, 9).replaceFirst('O', '0');
     final documentNumberCheckDigitRaw = secondLine[9];
     final nationalityRaw = secondLine.substring(10, 13);
     final birthDateRaw = secondLine.substring(13, 19);
