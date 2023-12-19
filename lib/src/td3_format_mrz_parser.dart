@@ -15,14 +15,14 @@ class _TD3MRZFormatParser {
       throw const InvalidMRZInputException();
     }
 
-    final firstLine = input[0];
+    final firstLine = input[0].replaceAll('0', 'O');
     final secondLine = input[1];
 
     final isVisaDocument = firstLine[0] == 'V';
     final documentTypeRaw = firstLine.substring(0, 1);
     final countryCodeRaw = firstLine.substring(2, 5);
     final namesRaw = firstLine.substring(5);
-    final documentNumberRaw = secondLine.substring(0, 9).replaceFirst('O', '0');
+    final documentNumberRaw = secondLine.substring(0, 9);
     final documentNumberCheckDigitRaw = secondLine[9];
     final nationalityRaw = secondLine.substring(10, 13);
     final birthDateRaw = secondLine.substring(13, 19);
