@@ -15,11 +15,11 @@ class _TD3MRZFormatParser {
       throw const InvalidMRZInputException();
     }
 
-    final firstLine = input[0].replaceAll('0', 'O');
+    final firstLine = input[0];
     final secondLine = input[1];
 
     final isVisaDocument = firstLine[0] == 'V';
-    final documentTypeRaw = firstLine.substring(0, 1);
+    final documentTypeRaw = firstLine.substring(0, 2);
     final countryCodeRaw = firstLine.substring(2, 5);
     final namesRaw = firstLine.substring(5);
     final documentNumberRaw = secondLine.substring(0, 9);
@@ -39,7 +39,7 @@ class _TD3MRZFormatParser {
     final countryCodeFixed =
         MRZFieldRecognitionDefectsFixer.fixCountryCode(countryCodeRaw);
     final namesFixed = MRZFieldRecognitionDefectsFixer.fixNames(namesRaw);
-    final documentNumberFixed = documentNumberRaw;
+    var documentNumberFixed = documentNumberRaw;
     final documentNumberCheckDigitFixed =
         MRZFieldRecognitionDefectsFixer.fixCheckDigit(
             documentNumberCheckDigitRaw);
@@ -67,7 +67,13 @@ class _TD3MRZFormatParser {
         MRZCheckDigitCalculator.getCheckDigit(documentNumberFixed);
 
     if (!documentNumberIsValid) {
-      throw const InvalidDocumentNumberException();
+      documentNumberFixed = documentNumberFixed.replaceAll('O', '0');
+      final documentNumberIsValid =
+          int.tryParse(documentNumberCheckDigitFixed) ==
+              MRZCheckDigitCalculator.getCheckDigit(documentNumberFixed);
+      if (!documentNumberIsValid) {
+        throw const InvalidDocumentNumberException();
+      }
     }
 
     final birthDateIsValid = int.tryParse(birthDateCheckDigitFixed) ==
